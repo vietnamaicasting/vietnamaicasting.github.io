@@ -1,0 +1,438 @@
+<!doctype html><html><head><meta charset=utf-8><title>AI Face Extras Casting</title><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>AI Face Extras Casting</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Be+Vietnam+Pro:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap&subset=vietnamese">
+<style>
+/* Layout: clapperboard header, video strip of scenes, then a two-column casting slate (form | sample profile) that stacks on phones */
+:root{
+  --bg:#f3f1ee; --surface:#ffffff; --ink:#18171c; --muted:#615d68; --line:#d9d5d0;
+  --accent:#c8331f; --accent-ink:#ffffff; --tape:#f1c232; --ok:#227a4b;
+  --f-display:"Anton","Impact","Arial Narrow",sans-serif;
+  --f-body:"Be Vietnam Pro",system-ui,"Segoe UI",sans-serif;
+  --f-mono:"Roboto Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#131217; --surface:#1d1c22; --ink:#f0eee9; --muted:#a5a1ab; --line:#34323b;
+  --accent:#ef5a42; --accent-ink:#ffffff; --tape:#e8b923; --ok:#4cc286; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#131217; --surface:#1d1c22; --ink:#f0eee9; --muted:#a5a1ab; --line:#34323b;
+  --accent:#ef5a42; --accent-ink:#ffffff; --tape:#e8b923; --ok:#4cc286; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 56px}
+.wrap{max-width:1100px;margin:0 auto}
+h1,h2{font-family:var(--f-display);font-weight:400;letter-spacing:.01em;text-wrap:balance;line-height:1.05;margin:0}
+.clap{height:22px;margin:24px 0 0;border-radius:4px 4px 0 0;
+  background:repeating-linear-gradient(-55deg,var(--ink) 0 22px,var(--bg) 22px 44px);border:2px solid var(--ink)}
+.slate{border:2px solid var(--ink);border-top:0;background:var(--surface);padding:24px;display:grid;gap:14px}
+.slate h1{font-size:clamp(34px,7vw,64px);text-transform:uppercase}
+.slate h1 em{font-style:normal;color:var(--accent)}
+.meta{display:flex;flex-wrap:wrap;gap:0;font-family:var(--f-mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;border-top:1px solid var(--line)}
+.meta div{padding:10px 16px 0 0;margin-right:16px;display:grid}
+.meta b{font-weight:500;font-size:14px;color:var(--ink);letter-spacing:.02em}
+.meta span{color:var(--muted)}
+.lead{max-width:68ch;margin:0;color:var(--muted);font-size:15.5px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.lang{display:flex;border:1.5px solid var(--ink);border-radius:999px;overflow:hidden}
+.lang button{font:500 12px var(--f-mono);letter-spacing:.08em;padding:5px 12px;border:0;background:transparent;color:var(--ink);cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.terms .wide{grid-column:1/-1}
+.clip figcaption small span{font:inherit}
+.brand{font-family:var(--f-mono);font-weight:500;font-size:13px;text-transform:uppercase;letter-spacing:.14em;color:var(--accent)}
+.terms{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;border-top:1px solid var(--line);padding-top:14px}
+@media (max-width:640px){.terms{grid-template-columns:1fr}}
+.terms h3{margin:0 0 4px;font-family:var(--f-mono);font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--accent)}
+.terms p,.terms ul{margin:0;font-size:14px;max-width:65ch}
+.terms ul{padding-left:18px;display:grid;gap:4px}
+section{margin-top:44px}
+.sec-h{display:flex;align-items:baseline;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.sec-h h2{font-size:30px;text-transform:uppercase}
+.sec-h p{margin:0;color:var(--muted);font-size:14px}
+.reel{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.clip{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden;display:grid;margin:0}
+.clip video{width:100%;aspect-ratio:16/9;object-fit:cover;background:#000;display:block}
+.clip figcaption{padding:10px 12px;font-size:13px;display:grid;gap:2px}
+.clip figcaption small{font-family:var(--f-mono);color:var(--accent);font-size:11px;letter-spacing:.06em}
+.grid2{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:820px){.grid2{grid-template-columns:1fr}}
+form{background:var(--surface);border:2px solid var(--ink);border-radius:6px;padding:22px;display:grid;gap:18px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:520px){.row{grid-template-columns:1fr}}
+.f{display:grid;gap:6px;min-width:0}
+label,.lbl{font-weight:600;font-size:14px}
+.req{color:var(--accent)}
+input[type=text],input[type=tel],input[type=email],input[type=number],input[type=date]{
+  width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:10px 12px}
+input:focus-visible,button:focus-visible,.choice input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
+.unit{position:relative}.unit input{padding-right:42px}
+.unit i{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-style:normal;font-family:var(--f-mono);color:var(--muted);font-size:13px}
+.hint{font-size:12.5px;color:var(--muted);margin:0}
+.consent{border:1px dashed var(--line);border-radius:6px;padding:14px;display:grid;gap:10px}
+.choices{display:flex;gap:10px;flex-wrap:wrap}
+.choice{position:relative}
+.choice input{position:absolute;opacity:0}
+.choice span{display:inline-block;padding:8px 22px;border:2px solid var(--ink);border-radius:999px;font-weight:600;cursor:pointer}
+.choice input:checked+span{background:var(--ink);color:var(--bg)}
+.drop{border:2px dashed var(--line);border-radius:6px;padding:14px;display:grid;gap:10px}
+.drop.must{border-color:var(--tape)}
+.drop input[type=file]{font:inherit;font-size:13px;max-width:100%}
+.thumbs{display:flex;flex-wrap:wrap;gap:8px}
+.thumbs img{width:72px;height:90px;object-fit:cover;border-radius:4px;border:1px solid var(--line)}
+.tag{display:inline-block;font-family:var(--f-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;background:var(--tape);color:#1b1a16;padding:2px 7px;border-radius:3px;font-weight:500}
+.err{color:var(--accent);font-size:13px;margin:0;min-height:0}
+.btn{font:inherit;font-weight:700;border:0;border-radius:4px;padding:12px 20px;cursor:pointer;background:var(--accent);color:var(--accent-ink);text-transform:uppercase;letter-spacing:.04em}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--ink)}
+aside{display:grid;gap:12px}
+.sample{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px;display:grid;gap:10px}
+.sample img{width:100%;border-radius:4px;display:block}
+.sample ul{margin:0;padding-left:18px;font-size:13.5px;color:var(--muted)}
+.out{background:var(--surface);border:2px solid var(--ok);border-radius:6px;padding:18px;display:grid;gap:12px}
+.out pre{margin:0;white-space:pre-wrap;word-break:break-word;font-family:var(--f-mono);font-size:13px;background:var(--bg);padding:14px;border-radius:4px;border:1px solid var(--line);overflow-x:auto}
+.out .acts{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.ok{color:var(--ok);font-weight:600;font-size:14px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:18px;display:grid;gap:12px;margin-bottom:16px}
+.acts{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+textarea{width:100%;font:13px/1.5 var(--f-mono);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:10px 12px;resize:vertical}
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:820px}
+th{text-align:left;font-family:var(--f-mono);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);border-bottom:2px solid var(--ink);padding:8px}
+td{border-bottom:1px solid var(--line);padding:8px;vertical-align:middle}
+.n{text-align:right;font-variant-numeric:tabular-nums}
+td.empty{color:var(--muted);text-align:center;padding:24px}
+.pill{display:inline-block;padding:1px 9px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid currentColor}
+.pill.y{color:var(--ok)}.pill.n{color:var(--accent)}
+td select{font:inherit;font-size:13px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:4px 6px}
+.del{font:inherit;font-size:12px;background:none;border:0;color:var(--muted);cursor:pointer;text-decoration:underline}
+.del.sure{color:var(--accent);font-weight:700}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+  <div class="clap" aria-hidden="true"></div>
+  <header class="slate">
+    <div class="topbar">
+      <div class="brand">AI Face Extras Casting</div>
+      <div class="lang" role="group" aria-label="Ngôn ngữ / Language">
+        <button type="button" data-lang="vi" aria-pressed="true">VI</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+    <h1 data-i="h1">Tuyển diễn viên <em>quần chúng</em><br>cho phim AI</h1>
+    <p class="lead" data-i="lead">AI Face Extras Casting đang tìm kiếm gương mặt diễn viên quần chúng cho một dự án phim ứng dụng công nghệ trí tuệ nhân tạo, do Công ty truyền thông tại Việt Nam sản xuất. Toàn bộ quá trình tuyển chọn diễn ra trực tuyến: ứng viên gửi thông tin cá nhân và ảnh chân dung, đội ngũ sản xuất sẽ dùng những gương mặt được chọn để xây dựng nhân vật trong phim. Mời bạn xem các cảnh minh hoạ và hoàn thành phiếu ứng tuyển bên dưới.</p>
+    <div class="meta">
+      <div><span data-i="m-prod">Nhà sản xuất</span><b data-i="m-prod-v">Công ty truyền thông tại Việt Nam</b></div>
+      <div><span data-i="m-age">Độ tuổi</span><b data-i="m-age-v">18 – 35 tuổi</b></div>
+      <div><span data-i="m-sex">Giới tính</span><b data-i="m-sex-v">Nam, nữ</b></div>
+      <div><span data-i="m-role">Vai</span><b data-i="m-role-v">Quần chúng</b></div>
+      <div><span data-i="m-genre">Thể loại</span><b data-i="m-genre-v">Phim AI · thương mại</b></div>
+    </div>
+    <div class="terms">
+      <div><h3 data-i="t-look">Yêu cầu ngoại hình</h3><p data-i="t-look-v">Không yêu cầu ngoại hình đặc biệt. Da mặt không có quá nhiều mụn hoặc sẹo rỗ.</p></div>
+      <div><h3 data-i="t-loc">Địa điểm diễn</h3><p data-i="t-loc-v">Không cần diễn trực tiếp. Đây là phim AI nên chỉ cần gương mặt của bạn xuất hiện trên hình.</p></div>
+      <div class="wide"><h3 data-i="t-terms">Điều khoản thoả thuận</h3>
+        <ul data-i="t-terms-v">
+          <li>Diễn viên quần chúng đồng ý cho sử dụng gương mặt của mình trong suốt bộ phim này.</li>
+          <li>Những gương mặt được chọn sẽ nhận thông báo qua Gmail. Bạn nào có tiềm năng sẽ được nhà sản xuất ký hợp đồng sử dụng gương mặt lâu dài.</li>
+          <li><strong>Lương thoả thuận</strong>, vì sẽ có những bạn được nhà sản xuất chọn xuất hiện trong nhiều cảnh hơn.</li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <section aria-labelledby="h-reel">
+    <div class="sec-h"><h2 id="h-reel" data-i="reel-h">Cảnh minh hoạ</h2><p data-i="reel-p">Gương mặt của bạn có thể xuất hiện trong những khung hình như thế này. Bấm vào video để xem và nghe tiếng.</p></div>
+    <div class="reel">
+      <figure class="clip"><video src="clip4.mp4" poster="clip4.jpg" playsinline controls preload="metadata"></video><figcaption><small><span data-i="sc">CẢNH</span> 01</small><span data-i="c1">Múa kiếm trước cổng thành</span></figcaption></figure>
+      <figure class="clip"><video src="clip5.mp4" poster="clip5.jpg" playsinline controls preload="metadata"></video><figcaption><small><span data-i="sc">CẢNH</span> 02</small><span data-i="c2">Lớp học, lần đầu làm quen</span></figcaption></figure>
+      <figure class="clip"><video src="clip3.mp4" poster="clip3.jpg" playsinline controls preload="metadata"></video><figcaption><small><span data-i="sc">CẢNH</span> 03</small><span data-i="c3">Đám đông trong bữa tiệc</span></figcaption></figure>
+      <figure class="clip"><video src="clip1.mp4" poster="clip1.jpg" playsinline controls preload="metadata"></video><figcaption><small><span data-i="sc">CẢNH</span> 04</small><span data-i="c4">Nhân vật chính ở nhà</span></figcaption></figure>
+      <figure class="clip"><video src="clip2.mp4" poster="clip2.jpg" playsinline controls preload="metadata"></video><figcaption><small><span data-i="sc">CẢNH</span> 05</small><span data-i="c5">Cảnh biển trầm lắng</span></figcaption></figure>
+      <figure class="clip"><video src="clip9.mp4" poster="clip9.jpg" playsinline controls preload="metadata"></video><figcaption><small><span data-i="sc">CẢNH</span> 06</small><span data-i="c6">Yến tiệc trong cung điện (cổ trang)</span></figcaption></figure>
+      <figure class="clip"><video src="clip6.mp4" poster="clip6.jpg" playsinline controls preload="metadata"></video><figcaption><small><span data-i="sc">CẢNH</span> 07</small><span data-i="c7">Doanh trại, chiến binh giáp sắt</span></figcaption></figure>
+      <figure class="clip"><video src="clip7.mp4" poster="clip7.jpg" playsinline controls preload="metadata"></video><figcaption><small><span data-i="sc">CẢNH</span> 08</small><span data-i="c8">Đồng hoa cải lúc hoàng hôn</span></figcaption></figure>
+      <figure class="clip"><video src="clip8.mp4" poster="clip8.jpg" playsinline controls preload="metadata"></video><figcaption><small><span data-i="sc">CẢNH</span> 09</small><span data-i="c9">Bãi tập bắn cung</span></figcaption></figure>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-form">
+    <div class="sec-h"><h2 id="h-form" data-i="form-h">Phiếu ứng tuyển</h2><p data-i="form-p">Mục có dấu <span class="req">*</span> là bắt buộc.</p></div>
+    <div class="grid2">
+      <div style="display:grid;gap:18px;min-width:0">
+      <form id="form" novalidate>
+        <div class="f"><label for="name" data-i="l-name">Họ và tên <span class="req">*</span></label><input type="text" id="name" autocomplete="name" placeholder="Nguyễn Thị Kim Yến"></div>
+        <div class="row">
+          <div class="f"><label for="phone" data-i="l-phone">Số điện thoại <span class="req">*</span></label><input type="tel" id="phone" autocomplete="tel" placeholder="09xx xxx xxx"></div>
+          <div class="f"><label for="email">Gmail <span class="req">*</span></label><input type="email" id="email" autocomplete="email" placeholder="ten@gmail.com"></div>
+        </div>
+        <div class="row">
+          <div class="f"><label for="dob" data-i="l-dob">Ngày tháng năm sinh <span class="req">*</span></label><input type="date" id="dob"></div>
+          <div class="row" style="gap:12px">
+            <div class="f"><label for="height" data-i="l-h">Chiều cao <span class="req">*</span></label><div class="unit"><input type="number" id="height" inputmode="numeric" min="120" max="220" placeholder="160"><i>cm</i></div></div>
+            <div class="f"><label for="weight" data-i="l-w">Cân nặng <span class="req">*</span></label><div class="unit"><input type="number" id="weight" inputmode="numeric" min="30" max="150" placeholder="48"><i>kg</i></div></div>
+          </div>
+        </div>
+
+        <div class="consent" role="radiogroup" aria-labelledby="c-l">
+          <span class="lbl" id="c-l" data-i="l-consent">Bạn có đồng ý cho đoàn phim dùng gương mặt của mình để làm phim AI <u>thương mại</u> không? <span class="req">*</span></span>
+          <div class="choices">
+            <label class="choice"><input type="radio" name="consent" id="c-yes" value="Có"><span data-i="yes">Có</span></label>
+            <label class="choice"><input type="radio" name="consent" id="c-no" value="Không"><span data-i="no">Không</span></label>
+          </div>
+          <p class="hint" data-i="h-consent">Gương mặt sẽ được AI dựng lại thành nhân vật trong phim, và phim có thể được phát hành, bán hoặc quảng bá.</p>
+        </div>
+
+        <div class="drop must">
+          <span class="lbl" data-i="l-bare"><span class="tag">Bắt buộc</span>&nbsp; Ảnh mặt mộc <span class="req">*</span></span>
+          <p class="hint" data-i="h-bare">Ít nhất 1 ảnh chụp thẳng mặt, không trang điểm, không filter, đủ sáng.</p>
+          <input type="file" id="bare" accept="image/*" multiple>
+          <div class="thumbs" id="bare-t"></div>
+        </div>
+        <div class="drop">
+          <span class="lbl" data-i="l-extra">Ảnh khác</span>
+          <p class="hint" data-i="h-extra">Gửi từ 3 đến 6 ảnh (không bắt buộc đủ 6 ảnh): ảnh toàn thân, ảnh nghiêng, ảnh có trang điểm…</p>
+          <input type="file" id="extra" accept="image/*" multiple>
+          <div class="thumbs" id="extra-t"></div>
+        </div>
+
+        <p class="err" id="err" role="alert"></p>
+        <div><button class="btn" type="submit" data-i="submit">Tạo phiếu ứng tuyển</button></div>
+      </form>
+
+      <div class="out" id="out" hidden>
+        <span class="lbl" data-i="ready">Phiếu của bạn đã sẵn sàng</span>
+        <pre id="msg"></pre>
+        <div class="acts"><button class="btn" type="button" id="copy" data-i="copy">Sao chép</button><button class="btn ghost" type="button" id="edit" data-i="edit">Sửa lại</button><span class="ok" id="copied" hidden data-i="copied">Đã sao chép</span></div>
+        <p class="hint" id="howto" data-i="howto">Dán đoạn trên vào tin nhắn gửi đoàn phim qua <b>[Zalo / Gmail của đoàn phim]</b> và đính kèm các ảnh bạn đã chọn.</p>
+      </div>
+      </div>
+
+      <aside aria-labelledby="h-sample">
+        <div class="sample">
+          <span class="lbl" id="h-sample" data-i="sample">Ảnh profile mẫu</span>
+          <img src="mau.jpg" alt="Profile mẫu gồm ảnh chân dung, ảnh áo dài, ảnh nghệ thuật và một ảnh mặt mộc ở bên phải" width="1100" height="590">
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="admin" aria-labelledby="h-admin" hidden>
+    <div class="sec-h"><h2 id="h-admin">Kết quả tuyển</h2><p>Chỉ bạn (chủ trang) nhìn thấy phần này.</p></div>
+    <div class="panel">
+      <div class="f">
+        <label for="paste">Dán phiếu ứng tuyển nhận được</label>
+        <textarea id="paste" rows="6" placeholder="Dán một hoặc nhiều tin nhắn bắt đầu bằng “ỨNG TUYỂN DIỄN VIÊN QUẦN CHÚNG – PHIM AI” từ Zalo hoặc Gmail vào đây…"></textarea>
+        <p class="hint">Có thể dán nhiều phiếu một lúc. Phiếu trùng số điện thoại sẽ được cập nhật, không tạo dòng mới.</p>
+      </div>
+      <div class="acts"><button class="btn" type="button" id="import">Thêm vào danh sách</button><span class="hint" id="imp-msg" role="status"></span></div>
+    </div>
+    <div class="panel">
+      <div class="acts" style="justify-content:space-between">
+        <span class="lbl"><span id="count">0</span> người ứng tuyển · <span id="count-yes">0</span> đồng ý dùng gương mặt</span>
+        <button class="btn" type="button" id="export">Xuất Excel</button>
+      </div>
+      <p class="hint" id="exp-msg" role="status"></p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Họ tên</th><th>Điện thoại</th><th>Gmail</th><th>Ngày sinh</th><th class="n">Cao</th><th class="n">Nặng</th><th>Đồng ý</th><th class="n">Ảnh mộc</th><th>Trạng thái</th><th></th></tr></thead>
+          <tbody id="rows"><tr><td colspan="11" class="empty">Chưa có phiếu nào. Dán phiếu ứng tuyển vào ô phía trên để bắt đầu.</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  /* ---------- Language switch (VI / EN) ---------- */
+  const EN={
+    'h1':'Casting <em>extras</em><br>for an AI film',
+    'lead':'AI Face Extras Casting is looking for faces of extras for a film project made with artificial intelligence, produced by a media company in Vietnam. The whole selection process takes place online: applicants send their personal details and portrait photos, and the production team uses the selected faces to build characters in the film. Please watch the sample scenes and complete the application form below.',
+    'm-prod':'Producer','m-prod-v':'A media company in Vietnam',
+    'm-age':'Age','m-age-v':'18 – 35 years old',
+    'm-sex':'Gender','m-sex-v':'Male, female',
+    'm-role':'Role','m-role-v':'Extras',
+    'm-genre':'Genre','m-genre-v':'AI film · commercial',
+    't-look':'Appearance','t-look-v':'No special appearance required. Your face should not have a lot of acne or acne scars.',
+    't-loc':'Filming location','t-loc-v':'No on-set acting is needed. This is an AI film, so only your face appears on screen.',
+    't-terms':'Terms of agreement',
+    't-terms-v':'<li>Extras agree that their face may be used throughout this film.</li><li>Selected faces will be notified by Gmail. Promising extras may be offered a long-term face-usage contract by the producer.</li><li><strong>Pay is negotiable</strong>, since some extras will be chosen by the producer to appear in more scenes.</li>',
+    'reel-h':'Sample scenes','reel-p':'Your face could appear in shots like these. Tap a video to watch it with sound.',
+    'sc':'SCENE',
+    'c1':'Sword dance at the city gate','c2':'Classroom, first meeting','c3':'Crowd at a party','c4':'Lead character at home','c5':'Quiet seaside scene','c6':'Palace banquet (period drama)','c7':'Military camp, armoured warrior','c8':'Rapeseed field at sunset','c9':'Archery range',
+    'form-h':'Application form','form-p':'Fields marked <span class="req">*</span> are required.',
+    'l-name':'Full name <span class="req">*</span>','l-phone':'Phone number <span class="req">*</span>','l-dob':'Date of birth <span class="req">*</span>',
+    'l-h':'Height <span class="req">*</span>','l-w':'Weight <span class="req">*</span>',
+    'l-consent':'Do you agree to let the production use your face in a <u>commercial</u> AI film? <span class="req">*</span>',
+    'yes':'Yes','no':'No',
+    'h-consent':'Your face will be recreated by AI as a character in the film, and the film may be released, sold or promoted.',
+    'l-bare':'<span class="tag">Required</span>&nbsp; Bare-face photo <span class="req">*</span>',
+    'h-bare':'At least 1 front-facing photo with no makeup, no filter, in good light.',
+    'l-extra':'Other photos','h-extra':'Send 3 to 6 photos (6 is not required): full body, side profile, with makeup…',
+    'submit':'Create application','ready':'Your application is ready',
+    'copy':'Copy','edit':'Edit','copied':'Copied',
+    'howto':'Paste the text above into a message to the production team via <b>[production team Zalo / Gmail]</b> and attach the photos you selected. The text stays in Vietnamese so the team can process it.',
+    'sample':'Sample profile'
+  };
+  const MISS={
+    vi:{lead:'Bạn còn thiếu: ',name:'họ tên',phone:'số điện thoại hợp lệ',email:'Gmail hợp lệ',dob:'ngày sinh',h:'chiều cao',w:'cân nặng',consent:'lựa chọn Có/Không về việc dùng gương mặt',bare:'ít nhất 1 ảnh mặt mộc'},
+    en:{lead:'Still missing: ',name:'full name',phone:'a valid phone number',email:'a valid Gmail address',dob:'date of birth',h:'height',w:'weight',consent:'Yes/No on face usage',bare:'at least 1 bare-face photo'}
+  };
+  let LANG='vi';
+  const VI={};
+  document.querySelectorAll('[data-i]').forEach(el=>{if(!(el.dataset.i in VI))VI[el.dataset.i]=el.innerHTML;});
+  function setLang(l){
+    LANG=l==='en'?'en':'vi';
+    const d=LANG==='en'?EN:VI;
+    document.querySelectorAll('[data-i]').forEach(el=>{const v=d[el.dataset.i];if(v!=null)el.innerHTML=v;});
+    document.documentElement.lang=LANG;
+    document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===LANG)));
+    $('err').textContent='';
+    try{localStorage.setItem('lang',LANG);}catch(_){}
+  }
+  document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
+  try{const saved=localStorage.getItem('lang');if(saved==='en')setLang('en');}catch(_){}
+  /* Only one video plays at a time */
+  document.querySelectorAll('.reel video').forEach(v=>v.addEventListener('play',()=>{
+    document.querySelectorAll('.reel video').forEach(o=>{if(o!==v)o.pause();});
+  }));
+  const files={bare:[],extra:[]};
+  function preview(key,max){
+    const inp=$(key),box=$(key+'-t');
+    inp.addEventListener('change',()=>{
+      files[key]=Array.from(inp.files||[]).slice(0,max);
+      box.textContent='';
+      files[key].forEach(f=>{const im=document.createElement('img');im.alt=f.name;im.src=URL.createObjectURL(f);box.appendChild(im);});
+    });
+  }
+  preview('bare',3);preview('extra',6);
+
+  function fmtDate(v){if(!v)return'';const[y,m,d]=v.split('-');return d+'/'+m+'/'+y;}
+  $('form').addEventListener('submit',e=>{
+    e.preventDefault();
+    const v={name:$('name').value.trim(),phone:$('phone').value.trim(),email:$('email').value.trim(),
+      dob:$('dob').value,h:$('height').value.trim(),w:$('weight').value.trim(),
+      consent:(document.querySelector('input[name=consent]:checked')||{}).value};
+    const miss=[];
+    const M=MISS[LANG];
+    if(!v.name)miss.push(M.name);
+    if(!/^[0-9+ .]{9,15}$/.test(v.phone))miss.push(M.phone);
+    if(!/^\S+@\S+\.\S+$/.test(v.email))miss.push(M.email);
+    if(!v.dob)miss.push(M.dob);
+    if(!v.h)miss.push(M.h);
+    if(!v.w)miss.push(M.w);
+    if(!v.consent)miss.push(M.consent);
+    if(!files.bare.length)miss.push(M.bare);
+    if(miss.length){$('err').textContent=M.lead+miss.join(', ')+'.';return;}
+    $('err').textContent='';
+    const list=a=>a.length?a.map(f=>'   • '+f.name).join('\n'):'   (không có)';
+    const txt=
+`ỨNG TUYỂN DIỄN VIÊN QUẦN CHÚNG – PHIM AI
+────────────────────────────
+Họ và tên:   ${v.name}
+Điện thoại:  ${v.phone}
+Gmail:       ${v.email}
+Ngày sinh:   ${fmtDate(v.dob)}
+Chiều cao:   ${v.h} cm
+Cân nặng:    ${v.w} kg
+
+Đồng ý cho dùng gương mặt trong phim AI thương mại: ${v.consent.toUpperCase()}
+
+Ảnh mặt mộc (${files.bare.length}):
+${list(files.bare)}
+Ảnh khác (${files.extra.length}):
+${list(files.extra)}
+────────────────────────────
+(Ảnh được đính kèm theo tin nhắn này)`;
+    $('msg').textContent=txt;
+    $('out').hidden=false;$('copied').hidden=true;
+    $('out').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+  });
+  $('copy').addEventListener('click',()=>{
+    const t=$('msg').textContent;
+    const sel=()=>{const r=document.createRange();r.selectNodeContents($('msg'));const s=getSelection();s.removeAllRanges();s.addRange(r);};
+    try{navigator.clipboard.writeText(t).then(()=>{$('copied').hidden=false;},sel);}catch(_){sel();}
+  });
+  $('edit').addEventListener('click',()=>{$('out').hidden=true;$('name').focus();});
+
+  /* ---------- Owner-only results panel ---------- */
+  const STATUS=['Chờ duyệt','Chọn','Dự bị','Loại'];
+  let col=null,list=[];
+  function grab(block,label){
+    const m=block.match(new RegExp(label+'\\s*:?\\s*(.*)','i'));return m?m[1].trim():'';
+  }
+  function parse(text){
+    const parts=text.split(/ỨNG TUYỂN DIỄN VIÊN QUẦN CHÚNG/i).slice(1);
+    return parts.map(b=>{
+      const files=(sec)=>{const m=b.match(new RegExp(sec+'\\s*\\((\\d+)\\)\\s*:?([\\s\\S]*?)(?=Ảnh (?:profile )?khác|─|$)','i'));
+        if(!m)return{n:0,names:''};return{n:+m[1],names:(m[2].match(/•\s*(.+)/g)||[]).map(s=>s.replace(/•\s*/,'').trim()).join(', ')};};
+      const bare=files('Ảnh mặt mộc'),extra=files('Ảnh (?:profile )?khác');
+      const consentRaw=grab(b,'thương mại');
+      return{name:grab(b,'Họ và tên'),phone:grab(b,'Điện thoại'),email:grab(b,'Gmail'),dob:grab(b,'Ngày sinh'),
+        height:parseFloat(grab(b,'Chiều cao'))||'',weight:parseFloat(grab(b,'Cân nặng'))||'',
+        consent:/không/i.test(consentRaw)?'Không':(/có/i.test(consentRaw)?'Có':''),
+        bareCount:bare.n,bareFiles:bare.names,extraCount:extra.n,extraFiles:extra.names};
+    }).filter(r=>r.name||r.phone);
+  }
+  function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+  function render(){
+    $('count').textContent=list.length;
+    $('count-yes').textContent=list.filter(r=>r.consent==='Có').length;
+    const tb=$('rows');
+    if(!list.length){tb.innerHTML='<tr><td colspan="11" class="empty">Chưa có phiếu nào. Dán phiếu ứng tuyển vào ô phía trên để bắt đầu.</td></tr>';return;}
+    tb.innerHTML=list.map((r,i)=>`<tr data-id="${esc(r.id)}"><td class="n">${i+1}</td><td>${esc(r.name)}</td><td>${esc(r.phone)}</td><td>${esc(r.email)}</td><td>${esc(r.dob)}</td><td class="n">${esc(r.height)}</td><td class="n">${esc(r.weight)}</td><td><span class="pill ${r.consent==='Có'?'y':'n'}">${esc(r.consent||'?')}</span></td><td class="n">${esc(r.bareCount)}</td><td><select aria-label="Trạng thái">${STATUS.map(s=>`<option${s===(r.status||STATUS[0])?' selected':''}>${s}</option>`).join('')}</select></td><td><button class="del" type="button">Xoá</button></td></tr>`).join('');
+  }
+  async function initOwner(){
+    const user=await claude.use('user');
+    if(!user||!(await user.isOwner()))return;
+    const db=await claude.use('db');
+    if(!db)return;
+    $('admin').hidden=false;
+    col=db.collection('applicants');
+    col.orderBy('addedAt','asc').onSnapshot(s=>{list=s.docs.map(d=>({id:d.id,...d.data()}));render();},
+      e=>{$('imp-msg').textContent='Không tải được danh sách ('+e.code+'). Hãy tải lại trang.';});
+    $('import').addEventListener('click',async()=>{
+      const rows=parse($('paste').value);
+      if(!rows.length){$('imp-msg').textContent='Không tìm thấy phiếu nào. Hãy dán đúng tin nhắn bắt đầu bằng “ỨNG TUYỂN DIỄN VIÊN QUẦN CHÚNG”.';return;}
+      let n=0;
+      for(const r of rows){
+        const key=(r.phone.replace(/\D/g,'')||r.email||r.name).slice(0,60).replace(/[^\w@.-]/g,'_');
+        const old=list.find(x=>x.id===key);
+        try{await col.doc(key).set({...r,status:old?.status||STATUS[0],addedAt:old?.addedAt||Date.now()});n++;}
+        catch(e){$('imp-msg').textContent='Lưu thất bại ('+e.code+').';return;}
+      }
+      $('paste').value='';$('imp-msg').textContent='Đã thêm hoặc cập nhật '+n+' phiếu.';
+    });
+    $('rows').addEventListener('change',e=>{
+      const tr=e.target.closest('tr');if(!tr||e.target.tagName!=='SELECT')return;
+      col.doc(tr.dataset.id).update({status:e.target.value}).catch(()=>{});
+    });
+    $('rows').addEventListener('click',e=>{
+      const b=e.target.closest('.del');if(!b)return;
+      if(!b.classList.contains('sure')){b.classList.add('sure');b.textContent='Chắc chắn xoá?';setTimeout(()=>{b.classList.remove('sure');b.textContent='Xoá';},4000);return;}
+      col.doc(b.closest('tr').dataset.id).delete().catch(()=>{});
+    });
+    const dl=await claude.use('downloads');
+    if(!dl||typeof XLSX==='undefined'){$('export').hidden=true;$('exp-msg').textContent='Không xuất được Excel ở chế độ xem này.';return;}
+    $('export').addEventListener('click',async()=>{
+      if(!list.length){$('exp-msg').textContent='Chưa có dữ liệu để xuất.';return;}
+      const data=list.map((r,i)=>({'STT':i+1,'Họ và tên':r.name,'Số điện thoại':r.phone,'Gmail':r.email,'Ngày sinh':r.dob,
+        'Chiều cao (cm)':r.height,'Cân nặng (kg)':r.weight,'Đồng ý dùng gương mặt (phim AI thương mại)':r.consent,
+        'Số ảnh mặt mộc':r.bareCount,'Tên ảnh mặt mộc':r.bareFiles,'Số ảnh khác':r.extraCount,'Tên ảnh khác':r.extraFiles,
+        'Trạng thái':r.status||STATUS[0],'Ngày nhận':new Date(r.addedAt).toLocaleDateString('vi-VN')}));
+      const ws=XLSX.utils.json_to_sheet(data);
+      ws['!cols']=[6,24,14,26,12,12,12,22,10,28,10,28,12,12].map(w=>({wch:w}));
+      const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Ứng viên');
+      const buf=XLSX.write(wb,{bookType:'xlsx',type:'array'});
+      const d=new Date(),stamp=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+      try{await dl.save({filename:'ket-qua-tuyen-quan-chung-'+stamp+'.xlsx',data:buf});$('exp-msg').textContent='Đã xuất '+list.length+' ứng viên.';}
+      catch(e){$('exp-msg').textContent=e.code==='declined'?'Bạn đã huỷ lưu file.':'Chưa xuất được file ('+e.code+').';}
+    });
+  }
+  if(window.claude&&claude.use)initOwner();
+})();
+</script>
+
+</body></html>
