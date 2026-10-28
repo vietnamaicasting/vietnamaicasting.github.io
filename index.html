@@ -38,6 +38,9 @@ h1,h2{font-family:var(--f-display);font-weight:400;letter-spacing:.01em;text-wra
 .lang button{font:500 12px var(--f-mono);letter-spacing:.08em;padding:5px 12px;border:0;background:transparent;color:var(--ink);cursor:pointer}
 .lang button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
 .terms .wide{grid-column:1/-1}
+.contact{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.contact .phone{font-family:var(--f-mono);font-size:17px;font-weight:500;letter-spacing:.04em;user-select:all}
+.mini{font:600 12px var(--f-body);padding:4px 10px;border:1.5px solid var(--ink);border-radius:999px;background:transparent;color:var(--ink);cursor:pointer}
 .clip figcaption small span{font:inherit}
 .brand{font-family:var(--f-mono);font-weight:500;font-size:13px;text-transform:uppercase;letter-spacing:.14em;color:var(--accent)}
 .terms{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;border-top:1px solid var(--line);padding-top:14px}
@@ -130,6 +133,7 @@ td select{font:inherit;font-size:13px;color:var(--ink);background:var(--bg);bord
     <div class="terms">
       <div><h3 data-i="t-look">Yêu cầu ngoại hình</h3><p data-i="t-look-v">Không yêu cầu ngoại hình đặc biệt. Da mặt không có quá nhiều mụn hoặc sẹo rỗ.</p></div>
       <div><h3 data-i="t-loc">Địa điểm diễn</h3><p data-i="t-loc-v">Không cần diễn trực tiếp. Đây là phim AI nên chỉ cần gương mặt của bạn xuất hiện trên hình.</p></div>
+      <div class="wide"><h3 data-i="t-contact">Liên hệ thắc mắc</h3><p class="contact"><b class="phone">0704 631 704</b> <span>(Celeste Đào)</span> <button type="button" class="mini" id="copy-phone" data-i="copy-phone">Sao chép số</button></p></div>
       <div class="wide"><h3 data-i="t-terms">Điều khoản thoả thuận</h3>
         <ul data-i="t-terms-v">
           <li>Diễn viên quần chúng đồng ý cho sử dụng gương mặt của mình trong suốt bộ phim này.</li>
@@ -274,7 +278,8 @@ td select{font:inherit;font-size:13px;color:var(--ink);background:var(--bg);bord
     'submit':'Create application','ready':'Your application is ready',
     'copy':'Copy','edit':'Edit','copied':'Copied',
     'howto':'Paste the text above into a message to the production team via <b>[production team Zalo / Gmail]</b> and attach the photos you selected. The text stays in Vietnamese so the team can process it.',
-    'sample':'Sample profile'
+    'sample':'Sample profile',
+    't-contact':'Questions? Contact','copy-phone':'Copy number'
   };
   const MISS={
     vi:{lead:'Bạn còn thiếu: ',name:'họ tên',phone:'số điện thoại hợp lệ',email:'Gmail hợp lệ',dob:'ngày sinh',h:'chiều cao',w:'cân nặng',consent:'lựa chọn Có/Không về việc dùng gương mặt',bare:'ít nhất 1 ảnh mặt mộc'},
@@ -294,6 +299,10 @@ td select{font:inherit;font-size:13px;color:var(--ink);background:var(--bg);bord
   }
   document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
   try{const saved=localStorage.getItem('lang');if(saved==='en')setLang('en');}catch(_){}
+  $('copy-phone').addEventListener('click',()=>{
+    const b=$('copy-phone'),done=()=>{const t=b.textContent;b.textContent=LANG==='en'?'Copied':'Đã sao chép';setTimeout(()=>{b.textContent=t;},1500);};
+    try{navigator.clipboard.writeText('0704631704').then(done,()=>{});}catch(_){}
+  });
   /* Only one video plays at a time */
   document.querySelectorAll('.reel video').forEach(v=>v.addEventListener('play',()=>{
     document.querySelectorAll('.reel video').forEach(o=>{if(o!==v)o.pause();});
